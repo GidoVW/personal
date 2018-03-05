@@ -87,10 +87,94 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# COLORS
+export COLOR_NC='\e[0m' # No Color
+export COLOR_WHITE='\e[1;37m'
+export COLOR_BLACK='\e[0;30m'
+export COLOR_BLUE='\e[0;34m'
+export COLOR_LIGHT_BLUE='\e[1;34m'
+export COLOR_GREEN='\e[0;32m'
+export COLOR_LIGHT_GREEN='\e[1;32m'
+export COLOR_CYAN='\e[0;36m'
+export COLOR_LIGHT_CYAN='\e[1;36m'
+export COLOR_RED='\e[0;31m'
+export COLOR_LIGHT_RED='\e[1;31m'
+export COLOR_PURPLE='\e[0;35m'
+export COLOR_LIGHT_PURPLE='\e[1;35m'
+export COLOR_BROWN='\e[0;33m'
+export COLOR_YELLOW='\e[1;33m'
+export COLOR_GRAY='\e[0;30m'
+export COLOR_LIGHT_GRAY='\e[0;37m'
+
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
+# Git aliases
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+  
+  # Add git completion to aliases
+  __git_complete gco _git_checkout
+  __git_complete gpl _git_pull
+  __git_complete ga  _git_add
+  __git_complete gcm _git_commit
+  __git_complete gp  _git_push
+  __git_complete gr  _git_rebase
+
+fi
+
+alias gl='git --no-pager log --pretty=format:"%C(yellow)%h %<(50)%Creset%s%C(cyan) %an%C(green)[%ad]" --decorate --date=short HEAD~15..HEAD'
+alias ga='git add'
+alias gap='git add -p'
+alias gc='git commit --verbose'
+alias gca='git commit --amend --verbose'
+alias gcm='git commit -m'
+alias gcam='git commit -a -m'
+alias gd='git diff'
+alias gds='git diff --stat'
+alias gdc='git diff --cached'
+alias gs='git status -s'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias grc='git rebase --continue'
+alias gri='git rebase -i'
+alias gr='git rebase'
+alias gpl='git pull'
+alias gp='git push'
+alias gpf='git push --force'
+alias gsh='git show'
+alias gcp='git cherry-pick'
+
+gla() {
+   echo "
+    ga =   git add
+    gap =  git add -p
+    gc =   git commit --verbose
+    gca =  git commit --amend --verbose
+    gcm =  git commit -m
+    gcam = git commit -a -m
+    
+    gd =   git diff
+    gds =  git diff --stat
+    gdc =  git diff --cached
+    gsh =  git show
+
+    gs =   git status -s
+    gco =  git checkout
+    gcob = git checkout -b
+    gp =   git push /* Auto-complete doesn't work */
+    gpl =  git pull
+    gcp =  git cherry-pick
+
+    grc =  git rebase --continue
+    gri =  git rebase -i
+    gr =   git rebase 
+
+    gla =  'shows all git aliases'
+    "
+}
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -104,6 +188,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
