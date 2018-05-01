@@ -111,6 +111,26 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# GIT DIFF
+# Git diff-so-fancy script
+git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+
+# Git diff colors
+git config --global color.ui true
+
+git config --global color.diff-highlight.oldNormal    "red bold"
+git config --global color.diff-highlight.oldHighlight "red bold 52"
+git config --global color.diff-highlight.newNormal    "green bold"
+git config --global color.diff-highlight.newHighlight "green bold 22"
+
+git config --global color.diff.meta       "yellow"
+git config --global color.diff.frag       "magenta bold"
+git config --global color.diff.commit     "yellow bold"
+git config --global color.diff.old        "red bold"
+git config --global color.diff.new        "green bold"
+git config --global color.diff.whitespace "red reverse"
+
+
 # Git aliases
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
@@ -190,6 +210,21 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 
+# AWS PATH EXPORT
+export PATH=$PATH:~/.local/bin
+
+
+# VDC DEV UTILS
+source ~/vdc-psm/vdc-dev-utils/vdc-dev-utils.sh
+
+# PSM
+source ~/vdc-psm/runpsm.sh
+
+
+# PROXY
+source ~/proxy-utils.sh
+
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -215,3 +250,10 @@ PURPLE="\[\033[0;35m\]"
 NO_COLOUR="\[\033[0m\]"
 
 export PS1="$GREEN\u@"$THEIP" $PURPLE\w$NO_COLOUR:$CYAN\$(__git_ps1) $NO_COLOUR\n\!\$ "
+
+
+
+## Do a ls after a cd
+function cd {
+  builtin cd "$@" && ls -F
+}
