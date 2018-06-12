@@ -152,6 +152,7 @@ alias gc='git commit --verbose'
 alias gca='git commit --amend --verbose'
 alias gcm='git commit -m'
 alias gcam='git commit -a -m'
+alias gcf='git commit --fixup'
 alias gd='git diff'
 alias gds='git diff --stat'
 alias gdc='git diff --cached'
@@ -175,6 +176,7 @@ gla() {
     gca =  git commit --amend --verbose
     gcm =  git commit -m
     gcam = git commit -a -m
+    gcf =  git commit --fixup
     
     gd =   git diff
     gds =  git diff --stat
@@ -253,7 +255,3 @@ export PS1="$GREEN\u@"$THEIP" $PURPLE\w$NO_COLOUR:$CYAN\$(__git_ps1) $NO_COLOUR\
 
 
 
-## Do a ls after a cd
-function cd {
-  builtin cd "$@" && ls -F
-}
