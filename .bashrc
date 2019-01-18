@@ -145,7 +145,7 @@ if [ -f ~/.git-completion.bash ]; then
 
 fi
 
-alias gl='git --no-pager log --pretty=format:"%C(yellow)%h %<(50)%Creset%s%C(cyan) %an%C(green)[%ad]" --decorate --date=short HEAD~15..HEAD'
+alias gl='git --no-pager log --pretty=format:"%C(yellow)%h %<(50)%Creset%s%C(cyan) %an%C(green)[%ad]" --decorate --date=short HEAD~10..HEAD'
 alias ga='git add'
 alias gap='git add -p'
 alias gc='git commit --verbose'
@@ -212,21 +212,6 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 
-# AWS PATH EXPORT
-export PATH=$PATH:~/.local/bin
-
-
-# VDC DEV UTILS
-source ~/vdc-psm/vdc-dev-utils/vdc-dev-utils.sh
-
-# PSM
-source ~/vdc-psm/runpsm.sh
-
-
-# PROXY
-source ~/proxy-utils.sh
-
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -241,7 +226,7 @@ fi
 if [ -e /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
     . /usr/share/git-core/contrib/completion/git-prompt.sh
     else
-    . ~/git-prompt.sh
+    . ~/scripts/git-prompt.sh
 fi
 
 THEIP=$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')
@@ -250,8 +235,24 @@ GREEN="\[\033[0;32m\]"
 RED="\[\033[0;31m\]"
 PURPLE="\[\033[0;35m\]"
 NO_COLOUR="\[\033[0m\]"
+LIGHT_RED='\e[1;31m'
 
-export PS1="$GREEN\u@"$THEIP" $PURPLE\w$NO_COLOUR:$CYAN\$(__git_ps1) $NO_COLOUR\n\!\$ "
+export PS1="$GREEN\u@"$THEIP" $LIGHT_RED\w$NO_COLOUR:$CYAN\$(__git_ps1) $NO_COLOUR\n\!\$ "
+
+LS_COLORS=$LS_COLORS:'ow=1;34:tw=1;34:' ; export LS_COLORS
 
 
+#####################
+# VDC
+#####################
+# AWS PATH EXPORT
+export PATH=$PATH:~/.local/bin
 
+# VDC DEV UTILS
+source ~/vdc/vdc-dev-utils/vdc-dev-utils.sh
+
+# PSM
+source ~/vdc/runpsm.sh
+
+# PROXY
+source ~/scripts/proxy-utils.sh
