@@ -87,33 +87,14 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# COLORS
-export COLOR_NC='\e[0m' # No Color
-export COLOR_WHITE='\e[1;37m'
-export COLOR_BLACK='\e[0;30m'
-export COLOR_BLUE='\e[0;34m'
-export COLOR_LIGHT_BLUE='\e[1;34m'
-export COLOR_GREEN='\e[0;32m'
-export COLOR_LIGHT_GREEN='\e[1;32m'
-export COLOR_CYAN='\e[0;36m'
-export COLOR_LIGHT_CYAN='\e[1;36m'
-export COLOR_RED='\e[0;31m'
-export COLOR_LIGHT_RED='\e[1;31m'
-export COLOR_PURPLE='\e[0;35m'
-export COLOR_LIGHT_PURPLE='\e[1;35m'
-export COLOR_BROWN='\e[0;33m'
-export COLOR_YELLOW='\e[1;33m'
-export COLOR_GRAY='\e[0;30m'
-export COLOR_LIGHT_GRAY='\e[0;37m'
-
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# GIT DIFF
-# Git diff-so-fancy script
-git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Git diff colors
 git config --global color.ui true
@@ -182,25 +163,22 @@ gla() {
     gds =  git diff --stat
     gdc =  git diff --cached
     gsh =  git show
-
     gs =   git status -s
     gco =  git checkout
     gcob = git checkout -b
     gp =   git push /* Auto-complete doesn't work */
     gpl =  git pull
     gcp =  git cherry-pick
-
     grc =  git rebase --continue
     gri =  git rebase -i
     gr =   git rebase 
-
     gla =  'shows all git aliases'
     "
 }
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -210,7 +188,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -223,36 +200,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -e /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
-    . /usr/share/git-core/contrib/completion/git-prompt.sh
-    else
-    . ~/scripts/git-prompt.sh
-fi
+parse_ifconfig() {
+    ifconfig |grep -v '127.0.0.1'| grep -B1 'inet ' | awk '/.*: flags/{split($1,a,":");ifname=a[1]};/inet /{print ifname"@"$2}' | awk '{printf "%s"" | ",$0}'
+}
+export PS1="\e[0;34m[\u | $(parse_ifconfig)\w | git@$(parse_git_branch)]\n\!>> \e[m"
 
-THEIP=$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')
-CYAN="\[\033[0;36m\]"
-GREEN="\[\033[0;32m\]"
-RED="\[\033[0;31m\]"
-PURPLE="\[\033[0;35m\]"
-NO_COLOUR="\[\033[0m\]"
-LIGHT_RED='\e[1;31m'
-
-export PS1="$GREEN\u@"$THEIP" $LIGHT_RED\w$NO_COLOUR:$CYAN\$(__git_ps1) $NO_COLOUR\n\!\$ "
-
-LS_COLORS=$LS_COLORS:'ow=1;34:tw=1;34:' ; export LS_COLORS
-
-
-#####################
-# VDC
-#####################
-# AWS PATH EXPORT
-export PATH=$PATH:~/.local/bin
-
-# VDC DEV UTILS
-source ~/vdc/vdc-dev-utils/vdc-dev-utils.sh
-
-# PSM
-source ~/vdc/runpsm.sh
-
-# PROXY
-source ~/scripts/proxy-utils.sh
+# \u user ; \w workdirectory \! history
