@@ -203,6 +203,19 @@ fi
 parse_ifconfig() {
     ifconfig |grep -v '127.0.0.1'| grep -B1 'inet ' | awk '/.*: flags/{split($1,a,":");ifname=a[1]};/inet /{print ifname"@"$2}' | awk '{printf "%s"" | ",$0}'
 }
-export PS1="\e[0;34m[\u | $(parse_ifconfig)\w | git@$(parse_git_branch)]\n\!>> \e[m"
+
+CLR_WHITE=[e[0m]
+CLR_DARK_GREEN=\[\e[32m\]
+CLR_RED=\[\e[91m\]
+CLR_CYAN=\[\e[34m\]
+
+CYAN="\[\033[0;34m\]"	
+GREEN="\[\033[0;32m\]"	
+RED="\[\033[0;31m\]"	
+PURPLE="\[\033[0;35m\]"	
+WHITE="\[\033[0m\]"	
+LIGHT_RED='\e[1;31m'
+
+export PS1="$CYAN[ $WHITE\u $CYAN| $CYAN$(parse_ifconfig)$PURPLE\w $CYAN|$GREEN git@$(parse_git_branch) $CYAN]\n\!>> "
 
 # \u user ; \w workdirectory \! history
